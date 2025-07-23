@@ -1,0 +1,1098 @@
+{
+  "name": "Virtual-Journalist-Template",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "value": "0 8 * * 1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1200,
+        200
+      ],
+      "id": "schedule-trigger-main",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "personality-selector",
+              "name": "current_personality",
+              "value": "alex_tech",
+              "type": "string"
+            },
+            {
+              "id": "domain-selector",
+              "name": "domain",
+              "value": "technologie",
+              "type": "string"
+            },
+            {
+              "id": "schedule-day",
+              "name": "day_of_week",
+              "value": "lundi",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1000,
+        200
+      ],
+      "id": "personality-config",
+      "name": "Personality Config"
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ $json.current_personality }}",
+        "rules": {
+          "rules": [
+            {
+              "operation": "equal",
+              "value2": "alex_tech",
+              "output": 0
+            },
+            {
+              "operation": "equal", 
+              "value2": "marie_society",
+              "output": 1
+            },
+            {
+              "operation": "equal",
+              "value2": "thomas_science", 
+              "output": 2
+            },
+            {
+              "operation": "equal",
+              "value2": "sophie_economy",
+              "output": 3
+            },
+            {
+              "operation": "equal",
+              "value2": "lucas_culture",
+              "output": 4
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -800,
+        200
+      ],
+      "id": "personality-switch",
+      "name": "Personality Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "alex-config",
+              "name": "journalist_name",
+              "value": "Alex",
+              "type": "string"
+            },
+            {
+              "id": "alex-domain",
+              "name": "specialty",
+              "value": "Technologie et Innovation",
+              "type": "string"
+            },
+            {
+              "id": "alex-style",
+              "name": "writing_style",
+              "value": "Analytique, précis, tourné vers l'avenir",
+              "type": "string"
+            },
+            {
+              "id": "alex-prompt",
+              "name": "system_prompt",
+              "value": "Vous êtes Alex, journaliste tech expert spécialisé dans l'analyse des innovations technologiques. Votre style est analytique, précis et prospectif. Rédigez des articles de 800-1200 mots avec cette structure: Introduction → Analyse technique → Impact sociétal → Conclusion prospective. Ton professionnel mais accessible. Évitez le jargon non expliqué et le sensationnalisme.",
+              "type": "string"
+            },
+            {
+              "id": "alex-keywords",
+              "name": "search_keywords",
+              "value": "technologie+innovation+IA+startup+gadgets",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -600,
+        100
+      ],
+      "id": "alex-tech-config",
+      "name": "Alex Tech Config"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "marie-config",
+              "name": "journalist_name",
+              "value": "Marie",
+              "type": "string"
+            },
+            {
+              "id": "marie-domain",
+              "name": "specialty",
+              "value": "Société et Politique",
+              "type": "string"
+            },
+            {
+              "id": "marie-style",
+              "name": "writing_style",
+              "value": "Investigateur, critique, factuel",
+              "type": "string"
+            },
+            {
+              "id": "marie-prompt",
+              "name": "system_prompt",
+              "value": "Vous êtes Marie, journaliste d'investigation spécialisée dans les enjeux sociétaux. Votre style est factuel, investigateur et nuancé. Rédigez des articles de 1000-1500 mots avec cette structure: Contexte → Enquête → Multiples perspectives → Analyse critique. Ton sérieux, objectif et engagé. Évitez les opinions personnelles et les raccourcis.",
+              "type": "string"
+            },
+            {
+              "id": "marie-keywords",
+              "name": "search_keywords",
+              "value": "société+politique+enquête+investigation+social",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -600,
+        150
+      ],
+      "id": "marie-society-config",
+      "name": "Marie Society Config"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "thomas-config",
+              "name": "journalist_name",
+              "value": "Thomas",
+              "type": "string"
+            },
+            {
+              "id": "thomas-domain",
+              "name": "specialty",
+              "value": "Sciences et Recherche",
+              "type": "string"
+            },
+            {
+              "id": "thomas-style",
+              "name": "writing_style",
+              "value": "Enthousiaste, éducatif, accessible",
+              "type": "string"
+            },
+            {
+              "id": "thomas-prompt",
+              "name": "system_prompt",
+              "value": "Vous êtes Thomas, journaliste scientifique passionné par la vulgarisation. Votre style est enthousiaste, éducatif et accessible. Rédigez des articles de 900-1300 mots avec cette structure: Découverte → Explication simple → Applications pratiques → Perspectives futures. Ton passionné mais rigoureux. Rendez la science accessible sans sacrifier la précision.",
+              "type": "string"
+            },
+            {
+              "id": "thomas-keywords",
+              "name": "search_keywords",
+              "value": "science+recherche+découverte+étude+innovation",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -600,
+        200
+      ],
+      "id": "thomas-science-config",
+      "name": "Thomas Science Config"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "sophie-config",
+              "name": "journalist_name",
+              "value": "Sophie",
+              "type": "string"
+            },
+            {
+              "id": "sophie-domain",
+              "name": "specialty",
+              "value": "Économie et Finance",
+              "type": "string"
+            },
+            {
+              "id": "sophie-style",
+              "name": "writing_style",
+              "value": "Professionnel, analytique, pragmatique",
+              "type": "string"
+            },
+            {
+              "id": "sophie-prompt",
+              "name": "system_prompt",
+              "value": "Vous êtes Sophie, journaliste économique experte en finance et marchés. Votre style est professionnel, analytique et pragmatique. Rédigez des articles de 800-1200 mots avec cette structure: Situation actuelle → Analyse des données → Impact économique → Prévisions. Ton professionnel et accessible. Expliquez les concepts financiers complexes simplement.",
+              "type": "string"
+            },
+            {
+              "id": "sophie-keywords",
+              "name": "search_keywords",
+              "value": "économie+finance+marché+business+entreprise",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -600,
+        250
+      ],
+      "id": "sophie-economy-config",
+      "name": "Sophie Economy Config"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "lucas-config",
+              "name": "journalist_name",
+              "value": "Lucas",
+              "type": "string"
+            },
+            {
+              "id": "lucas-domain",
+              "name": "specialty",
+              "value": "Culture et Arts",
+              "type": "string"
+            },
+            {
+              "id": "lucas-style",
+              "name": "writing_style",
+              "value": "Créatif, passionné, critique constructive",
+              "type": "string"
+            },
+            {
+              "id": "lucas-prompt",
+              "name": "system_prompt",
+              "value": "Vous êtes Lucas, critique culturel passionné par les arts et la créativité. Votre style est créatif, passionné avec une critique constructive. Rédigez des articles de 800-1200 mots avec cette structure: Présentation → Analyse artistique → Contexte culturel → Critique personnelle. Ton passionné et engagé. Valorisez la créativité tout en gardant un regard critique éclairé.",
+              "type": "string"
+            },
+            {
+              "id": "lucas-keywords",
+              "name": "search_keywords",
+              "value": "culture+art+musique+cinéma+littérature",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -600,
+        300
+      ],
+      "id": "lucas-culture-config",
+      "name": "Lucas Culture Config"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4"
+        },
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -400,
+        400
+      ],
+      "id": "topic-generator-model",
+      "name": "Topic Generator Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_OPENAI_CREDENTIALS_ID",
+          "name": "OpenAI API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.search_keywords }}",
+        "options": {
+          "systemMessage": "En tant que journaliste spécialisé en {{ $json.specialty }}, vous devez identifier les 3 sujets d'actualité les plus pertinents dans votre domaine aujourd'hui. Analysez les tendances actuelles et générez 3 requêtes de recherche précises et actuelles. Format de sortie: requête1+requête2+requête3 (seulement les mots-clés séparés par des +, rien d'autre)"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        200
+      ],
+      "id": "topic-generator",
+      "name": "Topic Generator"
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/customsearch/v1",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "YOUR_GOOGLE_API_KEY"
+            },
+            {
+              "name": "cx",
+              "value": "YOUR_SEARCH_ENGINE_ID"
+            },
+            {
+              "name": "q",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "dateRestrict",
+              "value": "d1"
+            },
+            {
+              "name": "num",
+              "value": "10"
+            },
+            {
+              "name": "lr",
+              "value": "lang_fr"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -200,
+        200
+      ],
+      "id": "google-search",
+      "name": "Google Search"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4"
+        },
+        "options": {
+          "temperature": 0.8,
+          "maxTokens": 2500
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        400
+      ],
+      "id": "article-writer-model",
+      "name": "Article Writer Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_OPENAI_CREDENTIALS_ID",
+          "name": "OpenAI API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"title\": \"Titre de l'article\",\n\t\"content\": \"Contenu complet de l'article\",\n\t\"excerpt\": \"Résumé court\",\n\t\"tags\": [\"tag1\", \"tag2\", \"tag3\"],\n\t\"category\": \"Catégorie\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        300,
+        400
+      ],
+      "id": "structured-output",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.items }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "={{ $('Personality Switch').item.json.system_prompt }}\n\nJournaliste: {{ $('Personality Switch').item.json.journalist_name }}\nSpécialité: {{ $('Personality Switch').item.json.specialty }}\nStyle: {{ $('Personality Switch').item.json.writing_style }}\n\nBasez-vous sur les résultats de recherche fournis pour rédiger un article original et engageant. Assurez-vous que l'article soit bien structuré, informatif et adapté à votre personnalité journalistique. Incluez des tags SEO pertinents et une catégorie appropriée.\n\nCréez un titre accrocheur et un extrait engageant. Le contenu doit être unique, bien référencé et professionnel."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        100,
+        200
+      ],
+      "id": "article-writer",
+      "name": "Article Writer"
+    },
+    {
+      "parameters": {
+        "title": "={{ $json.output.title }}",
+        "additionalFields": {
+          "content": "={{ $json.output.content }}",
+          "excerpt": "={{ $json.output.excerpt }}",
+          "status": "publish",
+          "categories": ["{{ $json.output.category }}"],
+          "tags": "={{ $json.output.tags.join(',') }}",
+          "author": "={{ $('Personality Switch').item.json.journalist_name }}"
+        }
+      },
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [
+        700,
+        200
+      ],
+      "id": "wordpress-publisher",
+      "name": "WordPress Publisher",
+      "credentials": {
+        "wordpressApi": {
+          "id": "YOUR_WORDPRESS_CREDENTIALS_ID",
+          "name": "WordPress Site"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4"
+        },
+        "options": {
+          "temperature": 0.9
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -400,
+        800
+      ],
+      "id": "image-prompt-model",
+      "name": "Image Prompt Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_OPENAI_CREDENTIALS_ID",
+          "name": "OpenAI API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Article Writer').item.json.output.content }}",
+        "options": {
+          "systemMessage": "Analysez le contenu de cet article et créez un prompt détaillé pour générer une image réaliste et professionnelle qui représente parfaitement le sujet traité. L'image doit être adaptée à un magazine en ligne professionnel. Soyez précis sur le style (photorealistic, professional), la composition, les couleurs et l'ambiance. Évitez les éléments de texte dans l'image."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        600
+      ],
+      "id": "image-prompt-generator",
+      "name": "Image Prompt Generator"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "stability-model",
+              "name": "model",
+              "value": "stable-diffusion-xl-v1",
+              "type": "string"
+            },
+            {
+              "id": "stability-prompt",
+              "name": "prompt",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "stability-format",
+              "name": "output_format",
+              "value": "png",
+              "type": "string"
+            },
+            {
+              "id": "stability-style",
+              "name": "style_preset",
+              "value": "photographic",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -200,
+        600
+      ],
+      "id": "image-config",
+      "name": "Image Config"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.stability.ai/v2beta/stable-image/generate/core",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "image/*"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "={{ $json.prompt }}"
+            },
+            {
+              "name": "output_format",
+              "value": "={{ $json.output_format }}"
+            },
+            {
+              "name": "style_preset",
+              "value": "={{ $json.style_preset }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        600
+      ],
+      "id": "stability-ai-generator",
+      "name": "Stability AI Generator",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "YOUR_STABILITY_CREDENTIALS_ID",
+          "name": "Stability AI Bearer Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('WordPress Publisher').item.json.link.replace('//', '//').replace('http:', 'https:').replace($('WordPress Publisher').item.json.link.split('/')[2], $('WordPress Publisher').item.json.link.split('/')[2]) }}/wp-json/wp/v2/media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Disposition",
+              "value": "attachment; filename=\"{{ $('Article Writer').item.json.output.title.toLowerCase().replace(/[^a-z0-9]/g, '-') }}.png\""
+            },
+            {
+              "name": "Content-Type",
+              "value": "image/png"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data"
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        200,
+        600
+      ],
+      "id": "upload-featured-image",
+      "name": "Upload Featured Image",
+      "credentials": {
+        "wordpressApi": {
+          "id": "YOUR_WORDPRESS_CREDENTIALS_ID",
+          "name": "WordPress Site"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('WordPress Publisher').item.json._links.self[0].href }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "featured_media",
+              "value": "={{ $json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        600
+      ],
+      "id": "set-featured-image",
+      "name": "Set Featured Image",
+      "credentials": {
+        "wordpressApi": {
+          "id": "YOUR_WORDPRESS_CREDENTIALS_ID",
+          "name": "WordPress Site"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "analytics-data",
+              "name": "publication_time",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            },
+            {
+              "id": "analytics-journalist",
+              "name": "journalist",
+              "value": "={{ $('Personality Switch').item.json.journalist_name }}",
+              "type": "string"
+            },
+            {
+              "id": "analytics-domain",
+              "name": "domain",
+              "value": "={{ $('Personality Switch').item.json.specialty }}",
+              "type": "string"
+            },
+            {
+              "id": "analytics-title",
+              "name": "article_title",
+              "value": "={{ $('Article Writer').item.json.output.title }}",
+              "type": "string"
+            },
+            {
+              "id": "analytics-url",
+              "name": "article_url",
+              "value": "={{ $('WordPress Publisher').item.json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "analytics-status",
+              "name": "status",
+              "value": "published_successfully",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        600,
+        600
+      ],
+      "id": "analytics-logger",
+      "name": "Analytics Logger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "YOUR_WEBHOOK_URL_FOR_NOTIFICATIONS",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "✅ Article publié avec succès!\n\n👤 Journaliste: {{ $json.journalist }}\n📰 Titre: {{ $json.article_title }}\n🔗 URL: {{ $json.article_url }}\n⏰ Publié: {{ $json.publication_time }}\n📂 Domaine: {{ $json.domain }}"
+            },
+            {
+              "name": "status",
+              "value": "success"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        600
+      ],
+      "id": "success-notification",
+      "name": "Success Notification"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "YOUR_WEBHOOK_URL_FOR_NOTIFICATIONS",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "❌ Échec de publication!\n\n👤 Journaliste: {{ $('Personality Config').item.json.current_personality }}\n⏰ Tentative: {{ new Date().toISOString() }}\n🔍 Erreur: {{ $json.error }}"
+            },
+            {
+              "name": "status",
+              "value": "error"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        600,
+        800
+      ],
+      "id": "error-notification",
+      "name": "Error Notification"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Personality Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Personality Config": {
+      "main": [
+        [
+          {
+            "node": "Personality Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Personality Switch": {
+      "main": [
+        [
+          {
+            "node": "Alex Tech Config",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Marie Society Config",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Thomas Science Config",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sophie Economy Config",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Lucas Culture Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alex Tech Config": {
+      "main": [
+        [
+          {
+            "node": "Topic Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marie Society Config": {
+      "main": [
+        [
+          {
+            "node": "Topic Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Thomas Science Config": {
+      "main": [
+        [
+          {
+            "node": "Topic Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sophie Economy Config": {
+      "main": [
+        [
+          {
+            "node": "Topic Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lucas Culture Config": {
+      "main": [
+        [
+          {
+            "node": "Topic Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Topic Generator Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Topic Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Topic Generator": {
+      "main": [
+        [
+          {
+            "node": "Google Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Search": {
+      "main": [
+        [
+          {
+            "node": "Article Writer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Article Writer Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Article Writer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Article Writer",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Article Writer": {
+      "main": [
+        [
+          {
+            "node": "WordPress Publisher",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WordPress Publisher": {
+      "main": [
+        [
+          {
+            "node": "Image Prompt Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Prompt Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Image Prompt Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Prompt Generator": {
+      "main": [
+        [
+          {
+            "node": "Image Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Config": {
+      "main": [
+        [
+          {
+            "node": "Stability AI Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Stability AI Generator": {
+      "main": [
+        [
+          {
+            "node": "Upload Featured Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Featured Image": {
+      "main": [
+        [
+          {
+            "node": "Set Featured Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Featured Image": {
+      "main": [
+        [
+          {
+            "node": "Analytics Logger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analytics Logger": {
+      "main": [
+        [
+          {
+            "node": "Success Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": ["journalism", "automation", "content-generation", "wordpress"]
+}

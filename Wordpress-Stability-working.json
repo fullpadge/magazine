@@ -1,0 +1,718 @@
+{
+  "name": "Wordpress-Stability-working",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/customsearch/v1",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AIzaSyCadNDzrE97MKfr0YcOCeegP8-yaM-vMNs"
+            },
+            {
+              "name": "cx",
+              "value": "3527db1f27a714e8c"
+            },
+            {
+              "name": "q",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -288,
+        192
+      ],
+      "id": "c913aefc-43d3-4f5f-92f0-4c5b57983e2b",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1104,
+        192
+      ],
+      "id": "5502d3f4-181d-484e-adb4-a2e098179014",
+      "name": "Telegram Trigger",
+      "webhookId": "5008b189-7897-4152-b908-85fc9edf8cb6",
+      "credentials": {
+        "telegramApi": {
+          "id": "mSVWes9TGqig84vG",
+          "name": "@slybonebot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -816,
+        432
+      ],
+      "id": "c7169967-3900-4940-b31a-f6f38e9489d7",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "QHpXXSadO43FhOsi",
+          "name": "Openai Seb key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        80,
+        432
+      ],
+      "id": "0615bedf-acf2-4594-b85d-56bc9b18b0b2",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "QHpXXSadO43FhOsi",
+          "name": "Openai Seb key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "title": "={{ $json.output.title }}",
+        "additionalFields": {
+          "content": "={{ $json.output.content }}",
+          "status": "publish"
+        }
+      },
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [
+        704,
+        192
+      ],
+      "id": "206649e4-7454-4823-8c83-f1e289679efc",
+      "name": "Wordpress",
+      "credentials": {
+        "wordpressApi": {
+          "id": "eunNjcGsmtlg4ePI",
+          "name": "sexyclip.dating"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"title\": \"Blog title\",\n\t\"content\": \"Blog content\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        400
+      ],
+      "id": "c782864d-5a73-4ae4-a4d0-a7f5e2bde9cb",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=Done! Image updated, post completed",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        688,
+        832
+      ],
+      "id": "3d5f2613-d1bc-4792-8f19-d1f8d1ee1a99",
+      "name": "Telegram",
+      "webhookId": "11d63627-c789-4d59-95f5-0afe7176ec95",
+      "credentials": {
+        "telegramApi": {
+          "id": "mSVWes9TGqig84vG",
+          "name": "@slybonebot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Creates the query\nTakes the user input and synthesizes into a few words that will act as the query",
+        "height": 540,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -896,
+        32
+      ],
+      "id": "ca53b310-532e-487a-8b24-e9d08a658c11",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "Take the user's message and distill it into 1-5 words. Output the words separated by + signs, and nothing else.\nThe output will be used in a web query so be very precise with formatting. Only words separated by + signs, nothing else"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -800,
+        192
+      ],
+      "id": "fb02f35a-eda8-4f22-b150-7597ee6e3cdf",
+      "name": "Query writer"
+    },
+    {
+      "parameters": {
+        "content": "## Google query\nTakes the query and performs a google search",
+        "height": 340,
+        "width": 320,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        48
+      ],
+      "id": "bb8c4445-e3d4-4a33-a882-47c6de879b5a",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Blog Writer Agent\nTakes the results returned by the previous node and writes a blog content and title",
+        "height": 580,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "379290c2-73e1-4f5d-bd80-86871c76bb68",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.items }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a master blog writer. \nThe user input is a web search of news articles related to the user's query.\n\nUser query:\n{{ $('Telegram Trigger').item.json.message.text }}\n\nTake an article and write a blog post about it. Make it interesting and engaging.\nCreate an interesting and engaging title.\n\nOutput the title and content according to the output JSON, don't output anything extra."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        144,
+        192
+      ],
+      "id": "c9b7271c-7023-4f2c-9114-e4609e1a1b44",
+      "name": "Blog writer"
+    },
+    {
+      "parameters": {
+        "content": "## Post to Wordpress\nUploads the blog to Wordpress",
+        "height": 300,
+        "width": 340,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        592,
+        64
+      ],
+      "id": "09015df6-941a-40c9-9d50-c1240a62be7e",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f9b1c384-5883-4dbf-ac46-38e10a0642f5",
+              "name": "model",
+              "value": "stable-diffusion-xl-v1",
+              "type": "string"
+            },
+            {
+              "id": "bb99423c-c131-4c93-b0ce-f5fcc4b5e3a8",
+              "name": "prompt",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "715d4000-05cd-4ab2-9577-379f1c4cc4ef",
+              "name": "output_format",
+              "value": "png",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -400,
+        832
+      ],
+      "id": "0c342a8a-95ca-4657-b817-8aa444e2687a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.stability.ai/v2beta/stable-image/generate/core",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "image/*"
+            },
+            {
+              "name": "Content-Type",
+              "value": "multipart/form-data"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "={{ $json.prompt }}"
+            },
+            {
+              "name": "output_format",
+              "value": "={{ $json.output_format }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -176,
+        832
+      ],
+      "id": "897d9a5b-37b2-4558-957e-4b9f3a8fb278",
+      "name": "StabilityAI Image Generation",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "bOo880Kh0Gq2yZoe",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://sexyclic.dating/wp-json/wp/v2/media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Disposition",
+              "value": "attachment; filename=\"image.png\""
+            },
+            {
+              "name": "Content-Type",
+              "value": "image/png"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        192,
+        832
+      ],
+      "id": "2891fb96-1f69-4796-8307-35e5350c5d68",
+      "name": "Upload media to wordpress",
+      "credentials": {
+        "wordpressApi": {
+          "id": "eunNjcGsmtlg4ePI",
+          "name": "sexyclip.dating"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=Article generated\n\n{{ $('Blog writer').item.json.output.title }}\n\n{{ $json.guid.rendered }}\n\nGenerating the image.....",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        992,
+        192
+      ],
+      "id": "43a65308-b710-4b3f-8f60-dcbb04b85434",
+      "name": "Telegram1",
+      "webhookId": "11d63627-c789-4d59-95f5-0afe7176ec95",
+      "credentials": {
+        "telegramApi": {
+          "id": "mSVWes9TGqig84vG",
+          "name": "@slybonebot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Blog writer').item.json.output.content }}",
+        "options": {
+          "systemMessage": "Your job is to generate a prompt so that the next agent can generate an image. You will receive a blog article from the user. Convert that into a prompt for image generation that represents closely what the article is talking about. Make the image realistic and evocative."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -864,
+        832
+      ],
+      "id": "b6d91797-a8de-4aab-9c2a-733c5d41a513",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -816,
+        1040
+      ],
+      "id": "27827f62-8b39-4f8a-98f6-223da2145602",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "QHpXXSadO43FhOsi",
+          "name": "Openai Seb key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://sexyclic.dating/wp-json/wp/v2/posts/{{ $('Wordpress').item.json.id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "featured_media",
+              "value": "={{ $json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        832
+      ],
+      "id": "6e101195-b6e1-4a50-b506-c9597ccd22be",
+      "name": "HTTP Request1",
+      "credentials": {
+        "wordpressApi": {
+          "id": "eunNjcGsmtlg4ePI",
+          "name": "sexyclip.dating"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Create the image gen prompt\nTake the blog article and convert it into an image generation prompt",
+        "height": 540,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -944,
+        672
+      ],
+      "id": "ec7c3884-5863-41a7-bb47-f947cc9aa6d0",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Generate image using Stability AI\nGenerate the image according to the prompt\n",
+        "height": 540,
+        "width": 440,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -448,
+        672
+      ],
+      "id": "1020fcaa-140e-4506-b0b9-95e7898dad2e",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Update blog post\nSet the generated image as a featured image in the blog post",
+        "height": 540,
+        "width": 480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        80,
+        672
+      ],
+      "id": "cd284387-8b5f-490a-89fc-7f5581f38ecf",
+      "name": "Sticky Note6"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Query writer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Blog writer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Query writer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Blog writer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Blog writer",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wordpress": {
+      "main": [
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query writer": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blog writer": {
+      "main": [
+        [
+          {
+            "node": "Wordpress",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "StabilityAI Image Generation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "StabilityAI Image Generation": {
+      "main": [
+        [
+          {
+            "node": "Upload media to wordpress",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload media to wordpress": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d4c729ee-7e3b-4c53-adf3-7331f01b479a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "68a40d0ee66d869e3c57a996f4484b3ba9689dba7fcb4810be65c0f1cc84b015"
+  },
+  "id": "ePlrimQFlwzuZWWm",
+  "tags": []
+}
